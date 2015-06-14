@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycleApp", "CycleApp\CycleApp.csproj", "{9F4447FA-FA28-4F82-BAD2-51A17CD14AD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycleTrainerLib", "CycleTrainerLib\CycleTrainerLib.csproj", "{274D44AB-6349-4C08-9469-F7327E127F08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FITDecode", "FIT\Lib\Decode\FITDecode.csproj", "{7397E11F-301C-48CF-B2B7-69F8E3213B2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F4447FA-FA28-4F82-BAD2-51A17CD14AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4447FA-FA28-4F82-BAD2-51A17CD14AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4447FA-FA28-4F82-BAD2-51A17CD14AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4447FA-FA28-4F82-BAD2-51A17CD14AD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{274D44AB-6349-4C08-9469-F7327E127F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{274D44AB-6349-4C08-9469-F7327E127F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{274D44AB-6349-4C08-9469-F7327E127F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{274D44AB-6349-4C08-9469-F7327E127F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7397E11F-301C-48CF-B2B7-69F8E3213B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7397E11F-301C-48CF-B2B7-69F8E3213B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7397E11F-301C-48CF-B2B7-69F8E3213B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7397E11F-301C-48CF-B2B7-69F8E3213B2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

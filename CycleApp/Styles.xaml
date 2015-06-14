@@ -1,0 +1,423 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:l="clr-namespace:UiStyles">
+
+	<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+	<l:ButtonToMarginConverter x:Key="ButtonSelectMargin" />
+	<l:ButtonToWidthConverter x:Key="ButtonSelectWidth" />
+
+	<Storyboard x:Key="ButtonCheckedAnimation">
+		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FaceHighlight">
+			<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
+		</ObjectAnimationUsingKeyFrames>
+		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LeftHighlight">
+			<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
+		</ObjectAnimationUsingKeyFrames>
+		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RightHighlight">
+			<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
+		</ObjectAnimationUsingKeyFrames>
+		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FaceChecked">
+			<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+		</ObjectAnimationUsingKeyFrames>
+	</Storyboard>
+
+	<Storyboard x:Key="ButtonTrackAnimation">
+		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="HotTrack">
+			<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+		</ObjectAnimationUsingKeyFrames>
+		<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="HotTrack">
+			<EasingDoubleKeyFrame KeyTime="0" Value="1" />
+		</DoubleAnimationUsingKeyFrames>
+	</Storyboard>
+
+	<Storyboard x:Key="ButtonPressedAnimation">
+		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FaceShadow">
+			<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+		</ObjectAnimationUsingKeyFrames>
+	</Storyboard>
+
+	<Style x:Key="FocusVisual">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<SolidColorBrush x:Key="Application.Background" Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}" />
+
+	<SolidColorBrush x:Key="Label.Gray" Color="#FF909090" />
+
+	<LinearGradientBrush x:Key="Button.Highlight.Outer" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#D4FFFFFF" Offset="0" />
+		<GradientStop Color="#DDFFFFFF" Offset="0.992" />
+		<GradientStop Color="#33FFFFFF" Offset="0.197" />
+		<GradientStop Color="#33FFFFFF" Offset="0.812" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="Button.Highlight.Face" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#97FFFFFF" Offset="0" />
+		<GradientStop Color="#63FFFFFF" Offset="0.987" />
+		<GradientStop Color="#44FFFFFF" Offset="0.251" />
+		<GradientStop Color="#4CFFFFFF" Offset="0.766" />
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="Button.Face.BaseColor" Color="#FFEAEAEA" />
+	<LinearGradientBrush x:Key="Button.Face.Overlay" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#1AFFFFFF" Offset="0" />
+		<GradientStop Color="#03FFFFFF" Offset="0.439" />
+		<GradientStop Color="#18000000" Offset="0.536" />
+		<GradientStop Color="#1C000000" Offset="1" />
+		<GradientStop Color="#00000000" Offset="0.51" />
+		<GradientStop Color="Transparent" Offset="0.49" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="Button.Face.HotTrack" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+		<GradientStop Color="#42299EFF" Offset="1" />
+		<GradientStop Color="#00109DFF" Offset="0.418" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="Button.Face" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#FFF0F0F0" Offset="0" />
+		<GradientStop Color="#FFECECEC" Offset="0.406" />
+		<GradientStop Color="#FFD4D4D4" Offset="0.628" />
+		<GradientStop Color="#FFD6D6D6" Offset="1" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="Button.Face.Shadow" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#42000000" Offset="0" />
+		<GradientStop Color="#00000000" Offset="0.205" />
+		<GradientStop Color="#00000000" Offset="0.858" />
+		<GradientStop Color="#0E000000" Offset="1" />
+		<GradientStop Color="#21000000" Offset="0.071" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="Button.Face.Checked" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#FF4677B2" Offset="0" />
+		<GradientStop Color="#FF5EA2F3" Offset="1" />
+		<GradientStop Color="#FF71ADF4" Offset="0.167" />
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="Button.Static.Background" Color="White" />
+	<SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070" />
+	<SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD" />
+	<SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1" />
+	<SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6" />
+	<SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B" />
+	<SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4" />
+	<SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5" />
+	<SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
+
+	<SolidColorBrush x:Key="FlatButton.Face" Color="#fff0f0f0" />
+	<SolidColorBrush x:Key="FlatButton.Checked" Color="#FF5EA2F3" />
+	<SolidColorBrush x:Key="FlatButton.Pressed" Color="#FFA9CEF9" />
+	<SolidColorBrush x:Key="FlatButton.HotTrack" Color="#2B8ED1FF" />
+
+	<Style x:Key="ButtonStyleTest" TargetType="{x:Type Button}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+		<Setter Property="Background" Value="{StaticResource Button.Static.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}" />
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="1" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" CornerRadius="3" Opacity="0.6">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal" />
+								<VisualState x:Name="MouseOver">
+									<Storyboard>
+										<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
+											<EasingDoubleKeyFrame KeyTime="0" Value="1" />
+										</DoubleAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Pressed" />
+								<VisualState x:Name="Disabled" />
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+						<ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsDefaulted" Value="true">
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}" />
+							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}" />
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}" />
+							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}" />
+							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}" />
+							<Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type Button}">
+		<Grid x:Name="grid" Opacity="1.0" ClipToBounds="True" Margin="0" Width="46">
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualStateGroup.Transitions>
+						<VisualTransition GeneratedDuration="0:0:0.2" />
+						<VisualTransition GeneratedDuration="0" To="Pressed" />
+						<VisualTransition GeneratedDuration="0:0:0.1" To="MouseOver" />
+					</VisualStateGroup.Transitions>
+					<VisualState x:Name="Normal">
+						<Storyboard>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.6" />
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+								<EasingDoubleKeyFrame KeyTime="0" Value="1" />
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="ellipse">
+								<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Button.Pressed.Background}" />
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled">
+						<Storyboard>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.4" />
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+				</VisualStateGroup>
+				<VisualStateGroup x:Name="CustomStates">
+					<VisualState x:Name="LeftRound" />
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Ellipse x:Name="ellipse" Fill="{DynamicResource Button.Static.Background}" HorizontalAlignment="Stretch" Height="Auto" Margin="0,0,-4,0" Stroke="{DynamicResource Button.Static.Border}" VerticalAlignment="Stretch" Width="Auto" />
+			<ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+		</Grid>
+	</ControlTemplate>
+
+	<ControlTemplate x:Key="RoundRectButtonTemplate" TargetType="{x:Type ButtonBase}">
+		<Grid ClipToBounds="True" UseLayoutRounding="True">
+
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CheckStates">
+					<VisualStateGroup.Transitions>
+						<VisualTransition GeneratedDuration="0" />
+					</VisualStateGroup.Transitions>
+					<VisualState x:Name="Checked" Storyboard="{StaticResource ButtonCheckedAnimation}" />
+					<VisualState x:Name="Unchecked" />
+					<VisualState x:Name="Indeterminate" />
+				</VisualStateGroup>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualStateGroup.Transitions>
+						<VisualTransition From="MouseOver" GeneratedDuration="0:0:0.1" />
+						<VisualTransition From="MouseOver" GeneratedDuration="0" To="Pressed" />
+					</VisualStateGroup.Transitions>
+					<VisualState x:Name="Normal" />
+					<VisualState x:Name="MouseOver" Storyboard="{StaticResource ButtonTrackAnimation}">
+					</VisualState>
+					<VisualState x:Name="Pressed" Storyboard="{StaticResource ButtonPressedAnimation}" />
+					<VisualState x:Name="Disabled" />
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+
+			<Rectangle x:Name="OuterHighlight" Fill="{DynamicResource Button.Highlight.Outer}" RadiusX="6" RadiusY="6" Margin="0" />
+			<Rectangle x:Name="Outline" Fill="#FF404040" RadiusX="5" RadiusY="5" Margin="1" />
+
+			<Grid ClipToBounds="True" Margin="1,1,1,1">
+				<Grid ClipToBounds="True" Margin="0">
+					<Rectangle x:Name="Face" Fill="{StaticResource Button.Face}" RadiusX="4" RadiusY="4" Margin="1" />
+					<Rectangle x:Name="FaceShadow" Visibility="Collapsed" Fill="{DynamicResource Button.Face.Shadow}" RadiusX="4" RadiusY="4" Margin="1" />
+					<Rectangle x:Name="FaceChecked" Fill="{StaticResource Button.Face.Checked}" RadiusX="4" RadiusY="4" Margin="1" Visibility="Collapsed" />
+					<Rectangle x:Name="HotTrack" Opacity="0" Fill="{DynamicResource Button.Face.HotTrack}" RadiusX="4" RadiusY="4" Margin="1" />
+				</Grid>
+				<Rectangle x:Name="FaceHighlight" RadiusX="3.5" RadiusY="3.5" Margin="1" Stroke="{DynamicResource Button.Highlight.Face}" />
+				<Rectangle x:Name="LeftHighlight" Visibility="Collapsed" />
+				<Rectangle x:Name="RightHighlight" Visibility="Collapsed" />
+			</Grid>
+			<ContentPresenter x:Name="ContentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+		</Grid>
+	</ControlTemplate>
+
+
+	<ControlTemplate x:Key="RoundRadioButtonTemplate" TargetType="{x:Type RadioButton}">
+		<Grid ClipToBounds="True" UseLayoutRounding="True" >
+
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CheckStates">
+					<VisualStateGroup.Transitions>
+						<VisualTransition GeneratedDuration="0" />
+					</VisualStateGroup.Transitions>
+					<VisualState x:Name="Checked" Storyboard="{StaticResource ButtonCheckedAnimation}" />
+					<VisualState x:Name="Unchecked" />
+					<VisualState x:Name="Indeterminate" />
+				</VisualStateGroup>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualStateGroup.Transitions>
+						<VisualTransition From="MouseOver" GeneratedDuration="0:0:0.1" />
+						<VisualTransition From="MouseOver" GeneratedDuration="0" To="Pressed" />
+					</VisualStateGroup.Transitions>
+					<VisualState x:Name="Normal" />
+					<VisualState x:Name="MouseOver" Storyboard="{StaticResource ButtonTrackAnimation}">
+					</VisualState>
+					<VisualState x:Name="Pressed" Storyboard="{StaticResource ButtonPressedAnimation}" />
+					<VisualState x:Name="Disabled" />
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+
+			<Rectangle x:Name="OuterHighlight" Fill="{DynamicResource Button.Highlight.Outer}" RadiusX="6" RadiusY="6" Margin="{Binding ConverterParameter=0, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+			<Rectangle x:Name="Outline" Fill="#FF404040" RadiusX="5" RadiusY="5" Margin="{Binding ConverterParameter=1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+
+			<Grid ClipToBounds="True" Margin="0,1,1,1">
+				<Grid ClipToBounds="True" Margin="0">
+					<Rectangle x:Name="Face" Fill="{StaticResource Button.Face}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+					<!--		<Rectangle x:Name="FaceOverlay" Fill="{DynamicResource Button.Face.Overlay}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" /> -->
+					<Rectangle x:Name="FaceShadow" Visibility="Collapsed" Fill="{DynamicResource Button.Face.Shadow}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+					<Rectangle x:Name="FaceChecked" Fill="{StaticResource Button.Face.Checked}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="Collapsed" />
+					<Rectangle x:Name="HotTrack" Opacity="0" Fill="{DynamicResource Button.Face.HotTrack}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+				</Grid>
+
+				<Rectangle x:Name="FaceHighlight" RadiusX="3.5" RadiusY="3.5" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Stroke="{DynamicResource Button.Highlight.Face}" />
+				<Rectangle x:Name="LeftHighlight" HorizontalAlignment="Left" Width="{Binding ConverterParameter=0, Converter={StaticResource ButtonSelectWidth}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Fill="{DynamicResource Button.Highlight.Face}" Margin="0,2,0,2" />
+				<Rectangle x:Name="RightHighlight" HorizontalAlignment="Right" Width="{Binding ConverterParameter=1, Converter={StaticResource ButtonSelectWidth}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Fill="{DynamicResource Button.Highlight.Face}" Margin="0,2,0,2" />
+			</Grid>
+			<ContentPresenter x:Name="ContentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+		</Grid>
+	</ControlTemplate>
+
+	<!-- 3D-style roundrect radio button -->
+	<Style x:Key="RoundRectRadioButton" TargetType="{x:Type RadioButton}">
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="1" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="UseLayoutRounding" Value="True" />
+		<Setter Property="Template" Value="{StaticResource RoundRadioButtonTemplate}" />
+	</Style>
+
+	<!-- 3D-style roundrect toggle button -->
+	<Style x:Key="RoundRectToggleButton" TargetType="{x:Type ToggleButton}">
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="1" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="UseLayoutRounding" Value="True" />
+		<Setter Property="Template" Value="{StaticResource RoundRectButtonTemplate}" />
+	</Style>
+
+	<!-- 3D-style roundrect push button -->
+	<Style x:Key="RoundRectPushButton" TargetType="{x:Type Button}">
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="1" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="UseLayoutRounding" Value="True" />
+		<Setter Property="Template" Value="{StaticResource RoundRectButtonTemplate}" />
+	</Style>
+
+	<ControlTemplate x:Key="FlatRoundRadioButtonTemplate" TargetType="{x:Type RadioButton}">
+		<Grid ClipToBounds="True" UseLayoutRounding="True">
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CheckStates">
+					<VisualStateGroup.Transitions>
+						<VisualTransition GeneratedDuration="0" />
+					</VisualStateGroup.Transitions>
+					<VisualState x:Name="Checked">
+						<Storyboard>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FaceChecked">
+								<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Unchecked" />
+					<VisualState x:Name="Indeterminate" />
+				</VisualStateGroup>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualStateGroup.Transitions>
+						<VisualTransition From="MouseOver" GeneratedDuration="0:0:0.1" />
+						<VisualTransition From="MouseOver" GeneratedDuration="0" To="Pressed" />
+					</VisualStateGroup.Transitions>
+					<VisualState x:Name="Normal" />
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="HotTrack">
+								<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="HotTrack">
+								<EasingDoubleKeyFrame KeyTime="0" Value="1" />
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FacePressed">
+								<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled" />
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Rectangle x:Name="Outline" Fill="#FF404040" RadiusX="5" RadiusY="5" Margin="{Binding ConverterParameter=1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+
+			<Grid ClipToBounds="True" Margin="0,1,1,1">
+				<Grid ClipToBounds="True" Margin="0">
+					<Rectangle x:Name="Face" Fill="{TemplateBinding Background}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+					<Rectangle x:Name="FacePressed" Visibility="Collapsed" Fill="{DynamicResource FlatButton.Pressed}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+					<Rectangle x:Name="FaceChecked" Fill="{StaticResource FlatButton.Checked}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="Collapsed" />
+					<Rectangle x:Name="HotTrack" Opacity="0" Fill="{DynamicResource FlatButton.HotTrack}" RadiusX="4" RadiusY="4" Margin="{Binding ConverterParameter=-1, Converter={StaticResource ButtonSelectMargin}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+				</Grid>
+			</Grid>
+			<ContentPresenter x:Name="ContentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+		</Grid>
+	</ControlTemplate>
+
+	<!-- Flat-style roundrect button -->
+	<Style x:Key="FlatRoundRectRadioButton" TargetType="{x:Type RadioButton}">
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="1" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="Background" Value="{StaticResource FlatButton.Face}" />
+		<Setter Property="Template" Value="{StaticResource FlatRoundRadioButtonTemplate}" />
+	</Style>
+	<StreamGeometry x:Key="PinImage">
+		m 0,0 c -0.18713,-0.13659 -0.23952,-0.28678 -0.16526,-0.47381 0.0335,-0.0844 0.57299,-0.78757 1.19891,-1.5628 2.22784,-2.75927 3.45408,-4.30656 3.46668,-4.37438 0.007,-0.039 -0.6781,-0.71297 -1.58304,-1.55678 -0.87768,-0.81839 -1.61704,-1.53765 -1.64298,-1.59835 -0.14089,-0.32967 0.57732,-0.99581 1.45291,-1.34755 1.10707,-0.44472 2.42294,-0.42624 3.71501,0.0523 l 0.42435,0.15717 1.55902,-1.679 1.55903,-1.67898 -0.0778,-0.30387 c -0.10111,-0.39768 -0.12673,-1.12274 -0.053,-1.49684 0.0718,-0.36264 0.28957,-0.84995 0.41154,-0.92098 0.0494,-0.0287 0.15947,-0.0547 0.24485,-0.0577 0.14212,-0.005 0.37314,0.19682 2.73511,2.39069 1.41894,1.31795 2.61347,2.45452 2.65452,2.5257 0.22515,0.39039 -0.29847,0.76517 -1.30057,0.93088 -0.29034,0.0479 -0.48215,0.0489 -0.90739,0.003 l -0.53923,-0.0576 -1.49609,1.60462 c -0.82285,0.88257 -1.51263,1.63712 -1.53283,1.67676 -0.0237,0.0467 0.0248,0.20687 0.13846,0.45535 0.0964,0.21076 0.24042,0.5878 0.32003,0.83787 0.13433,0.42181 0.25187,0.72495 0.25347,1.31649 0.002,0.62891 -0.0569,0.90403 -0.16805,1.28744 -0.1538,0.53065 -0.40447,1.0544 -0.68018,1.42113 -0.23546,0.31321 -0.43325,0.44112 -0.62039,0.40125 -0.0636,-0.0135 -0.83136,-0.69121 -1.73198,-1.52853 -1.11969,-1.04097 -1.63982,-1.49497 -1.68883,-1.47411 -0.0389,0.0168 -1.26336,1.14054 -2.7209,2.49769 -1.45754,1.35713 -2.70532,2.50657 -2.77283,2.55429 -0.16299,0.11523 -0.2942,0.11488 -0.45342,-0.001 z</StreamGeometry>
+
+	<StreamGeometry x:Key="PlusImage">m 5,0 2,0 0,5 5,0 0,2 -5,0 0,5 -2,0 0,-5 -5,0 0,-2 5,0 z</StreamGeometry>
+	<StreamGeometry x:Key="MinusImage">m 10,0 0,2 -10,0 0,-2 z</StreamGeometry>
+
+	<StreamGeometry x:Key="Crosshair">
+		m 7.5,-0.125 c -4.22561,0 -7.625,3.46663 -7.625,7.625 0,4.15837 3.39939,7.625 7.625,7.625 4.22561,0 7.625,-3.46663 7.625,-7.625 0,-4.15837 -3.39939,-7.625 -7.625,-7.625 z M 6.84375,1.125 C 6.89445,1.12 6.94892,1.129 7,1.125 L 7,4 8,4 8,1.125 C 11.11262,1.36582 13.60099,3.83428 13.84375,7 L 11,7 11,8 13.84375,8 C 13.60103,11.16567 11.11258,13.63423 8,13.875 L 8,11 7,11 7,13.875 C 3.88738,13.6342 1.39901,11.1657 1.15625,8 L 4,8 4,7 1.15625,7 C 1.39498,3.88627 3.80236,1.43389 6.84375,1.125 z
+	</StreamGeometry>
+
+	<StreamGeometry x:Key="ListToggleImage">
+		m 0,0 5,0 0,14 -5,0 z m 6,0 0,14 14,0 0,-14 z m 1,1 12,0 0,12 -12,0 z
+	</StreamGeometry>
+
+	<StreamGeometry x:Key="FolderImage">
+		M 1.1875,0 0,2.375 0,13.9375 0,14 0,14 1,14 16,14 21.375,5 16,5 16,2 7.8125,2 l -1,-2 -5.625,0 z m 0.625,1 4.375,0 1,2 L 15,3 15,5 5.4,5 1,12.28125 1,2.59 1.8125,1 z M 5.94,6 19.625,6 15.4,13 1.71875,13 5.9375,6 z
+	</StreamGeometry>
+
+	<StreamGeometry x:Key="SettingsImage">
+		m 33.739675,18.496382 c -0.03029,-0.01737 -0.364004,-0.530293 -0.741594,-1.139821 -0.377591,-0.609527 -0.705344,-1.132107 -0.728341,-1.161291 -0.027,-0.03426 -0.209698,-0.04046 -0.51557,-0.0175 -0.260568,0.01955 -0.721038,0.02002 -1.023268,0.0011 -0.507812,-0.03192 -0.554024,-0.02789 -0.609013,0.05313 -0.03273,0.04823 -0.366844,0.570133 -0.742483,1.159795 -0.375639,0.589662 -0.709909,1.083269 -0.742822,1.096902 -0.06873,0.02847 -2.124847,-0.812537 -2.153066,-0.880661 -0.01025,-0.02474 0.114002,-0.615901 0.27611,-1.313689 0.162109,-0.697786 0.299259,-1.306955 0.304779,-1.353709 0.0081,-0.06821 -0.07444,-0.159083 -0.417541,-0.459926 -0.235166,-0.206204 -0.557709,-0.529864 -0.71676,-0.719245 -0.282412,-0.336264 -0.292563,-0.343839 -0.433467,-0.323491 -0.07935,0.01146 -0.682067,0.140865 -1.33936,0.287568 -0.657294,0.146702 -1.222601,0.259386 -1.256239,0.250409 -0.08835,-0.02358 -0.944567,-2.090658 -0.899308,-2.171123 0.01723,-0.03063 0.538281,-0.368359 1.157889,-0.750502 0.619609,-0.382143 1.140503,-0.720725 1.157542,-0.752404 0.01704,-0.03168 0.01911,-0.16272 0.0046,-0.291203 -0.03931,-0.347952 -0.04111,-0.827982 -0.005,-1.322306 0.01771,-0.242208 0.01525,-0.452592 -0.0055,-0.46752 C 24.290553,8.205975 23.770101,7.872376 23.154706,7.47958 22.53931,7.086784 22.024353,6.737759 22.010356,6.703967 c -0.02889,-0.06975 0.81085,-2.1260188 0.87991,-2.1546244 0.02469,-0.010224 0.652491,0.1224711 1.395107,0.2948878 l 1.35021,0.3134846 0.362503,-0.4108208 c 0.199446,-0.2259811 0.521286,-0.5477476 0.715268,-0.7150672 0.193983,-0.1673175 0.358806,-0.3200932 0.366272,-0.3394993 0.0075,-0.019402 -0.126791,-0.6233969 -0.29835,-1.3422004 -0.17156,-0.7188035 -0.304652,-1.3344077 -0.295759,-1.3680099 0.02336,-0.088273 2.090791,-0.9446298 2.170307,-0.8989702 0.03027,0.017374 0.379125,0.5436142 0.775231,1.169406 0.396108,0.6257917 0.747554,1.1476263 0.78099,1.1596303 0.03344,0.011995 0.258321,0.00546 0.499747,-0.014535 0.241425,-0.02 0.677996,-0.019381 0.970156,0.00128 0.29216,0.020747 0.549605,0.020256 0.572102,-0.00107 0.0225,-0.021344 0.359783,-0.5545916 0.749522,-1.1849937 0.389742,-0.6304042 0.729143,-1.1546891 0.754225,-1.1650795 0.06797,-0.028155 2.116217,0.8319707 2.144647,0.9006073 0.01345,0.032469 -0.108554,0.6598614 -0.271116,1.3942057 -0.162564,0.7343421 -0.287403,1.3548917 -0.27742,1.3789979 0.01,0.024104 0.183652,0.1878485 0.385919,0.3638723 0.202271,0.1760259 0.505084,0.4785847 0.672922,0.672352 0.167836,0.1937694 0.332878,0.3631235 0.366756,0.3763435 0.03388,0.01323 0.632124,-0.111511 1.32943,-0.2771846 0.697308,-0.1656709 1.311977,-0.3010169 1.365937,-0.3007629 l 0.09811,4.269e-4 0.436953,1.0548986 c 0.331407,0.800086 0.429316,1.068176 0.405329,1.109877 -0.0174,0.03024 -0.543407,0.379624 -1.168917,0.776409 -0.625512,0.396785 -1.149116,0.748993 -1.163566,0.782681 -0.01445,0.03369 -0.0111,0.270386 0.0074,0.52599 0.01855,0.255606 0.0191,0.690798 0.0013,0.967095 -0.01787,0.276294 -0.01428,0.521544 0.008,0.544999 0.02225,0.02345 0.5559,0.360878 1.185886,0.749834 0.629984,0.388954 1.154134,0.728212 1.164779,0.753906 0.02861,0.06908 -0.830989,2.117114 -0.900721,2.145999 -0.03279,0.01357 -0.659063,-0.108886 -1.391732,-0.272143 -0.732666,-0.163258 -1.35042,-0.288948 -1.372782,-0.279309 -0.02236,0.0096 -0.193422,0.19445 -0.380133,0.410697 -0.186708,0.216247 -0.491069,0.521587 -0.676354,0.678534 -0.185285,0.156946 -0.348359,0.311265 -0.362386,0.342931 -0.01402,0.03166 0.106539,0.649132 0.267923,1.372149 0.161386,0.723016 0.285891,1.342179 0.276675,1.375913 -0.0127,0.0465 -0.270619,0.166494 -1.066305,0.496079 -0.795767,0.329617 -1.062866,0.4271 -1.104618,0.403148 z m 0.52757,-5.053238 C 35.85335,12.2556 36.604616,10.412698 36.308984,8.434637 36.257744,8.091813 36.214964,7.958795 35.950766,7.320972 35.628162,6.54214 35.44696,6.247084 34.991985,5.759769 33.992479,4.6892189 32.502736,4.0737428 31.028535,4.1223009 30.373849,4.1438649 30.032121,4.2258269 29.255272,4.5476084 28.478423,4.8693898 28.178829,5.053072 27.700648,5.500757 26.623894,6.508839 26.005694,7.997454 26.05593,9.461206 c 0.02287,0.666299 0.103374,1.003064 0.425977,1.781898 0.321782,0.776849 0.505464,1.076441 0.953148,1.554622 1.182829,1.263404 2.951733,1.862667 4.627599,1.567722 0.562223,-0.09895 0.529952,-0.08863 1.227283,-0.392489 0.545331,-0.237623 0.696525,-0.319589 0.977308,-0.529815 z M 32.05049,13.093045 c -3.086328,0.64173 -5.628953,-2.401242 -4.428343,-5.29977 0.274332,-0.662295 0.681117,-1.186716 1.283547,-1.654729 0.363841,-0.28266 1.264584,-0.655759 1.721729,-0.713164 0.756918,-0.09505 1.415379,-0.01187 2.077676,0.262465 0.662297,0.274334 1.186718,0.681119 1.654731,1.283549 0.282658,0.36384 0.655759,1.264584 0.713162,1.721729 0.187211,1.490865 -0.370644,2.835247 -1.547389,3.729081 -0.337339,0.256234 -1.058563,0.584229 -1.475113,0.670839 z m 0.04531,-2.435153 c 0.428507,-0.27999 0.708584,-0.776265 0.734799,-1.301999 0.0134,-0.268677 -0.03147,-0.487596 -0.115124,-0.686166 C 32.625515,8.45621 32.505025,8.268865 32.305567,8.088355 31.738002,7.574704 30.920529,7.514242 30.290901,7.939349 c -0.438555,0.296102 -0.686693,0.734367 -0.721742,1.274752 -0.01825,0.281232 0.02006,0.451237 0.124232,0.717632 0.103831,0.265567 0.197065,0.378826 0.396224,0.559065 0.456335,0.412984 1.133594,0.544699 1.704365,0.33147 0.06454,-0.02411 0.200356,-0.09808 0.30182,-0.164376 z
+	</StreamGeometry>
+
+	<!-- Gray label -->
+	<Style x:Key="GrayLabel" TargetType="{x:Type TextBlock}">
+		<Setter Property="Foreground" Value="{StaticResource Label.Gray}" />
+		<Setter Property="TextAlignment" Value="Right" />
+	</Style>
+
+</ResourceDictionary>

@@ -1,0 +1,230 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:WindowsPresentation="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
+	xmlns:local="clr-namespace:CycleApp"
+	xmlns:OxyPlot="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+	x:Class="CycleApp.MainWindow" Title="Cycle Trainer" Height="590" Width="1200"
+	SnapsToDevicePixels="True" Background="{DynamicResource Application.Background}">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Styles.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<StackPanel Grid.Column="0" Orientation="Horizontal" Height="30">
+				<Button Style="{StaticResource RoundRectPushButton}" Margin="0,0,10,0" Width="32" Padding="4,0,3,0" Command="{Binding Path=SelectFolder}">
+					<Path Fill="{StaticResource Button.Icon.Face}" Margin="1" Data="{StaticResource FolderImage}" Stretch="Uniform" SnapsToDevicePixels="True" />
+				</Button>
+				<ToggleButton Margin="0" Name="list_toggle_btn_" Style="{StaticResource RoundRectToggleButton}" IsChecked="{Binding Path=ListVisible, Mode=TwoWay}" Width="32" Padding="4">
+					<Path Fill="{StaticResource Button.Icon.Face}" Margin="1" Data="{StaticResource ListToggleImage}" Stretch="Uniform" SnapsToDevicePixels="True" />
+				</ToggleButton>
+				<Button Style="{StaticResource RoundRectPushButton}" Margin="10,0,0,0" Padding="6,0,6,0" Command="{Binding Path=SaveAsGpx}">
+					Save GPX
+				</Button>
+				<Grid x:Name="map_buttons_" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Height="30" Width="120" Margin="10,0,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<RadioButton x:Name="map_1_btn_" Grid.Column="0" Style="{StaticResource RoundRectRadioButton}" Content="Trails" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" IsChecked="{Binding IsCycleMapVisible, Mode=TwoWay}" />
+					<RadioButton x:Name="map_2_btn_" Grid.Column="1" Style="{StaticResource RoundRectRadioButton}" Content="Satellite" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" />
+				</Grid>
+
+			</StackPanel>
+
+			<!--<Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Height="30" Width="222">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<RadioButton x:Name="some_btn_" Grid.Column="0" Style="{StaticResource RoundRectRadioButton}" Content="Test" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" />
+				<RadioButton x:Name="graph_btn_" Grid.Column="1" Style="{StaticResource RoundRectRadioButton}" Content="Graphs" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" />
+				<RadioButton x:Name="map_btn_" Grid.Column="2" Style="{StaticResource RoundRectRadioButton}" Content="Map" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsChecked="True" SnapsToDevicePixels="True" />
+			</Grid>-->
+
+			<Grid Grid.Column="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Button Grid.Column="1" Style="{StaticResource RoundRectPushButton}" Margin="0" Width="32" Padding="0,0,0,0">
+					<Path Fill="{StaticResource Button.Icon.Face}" Margin="0" Data="{StaticResource SettingsImage}" Stretch="Uniform" SnapsToDevicePixels="False" />
+				</Button>
+			</Grid>
+		</Grid>
+
+		<!-- shadow edge -->
+		<Canvas Grid.Row="1" Height="3" VerticalAlignment="Bottom">
+			<Canvas.Background>
+				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+					<GradientStop Color="#00000000" Offset="0" />
+					<GradientStop Color="#66000000" Offset="1" />
+					<GradientStop Color="#3F000000" Offset="0.835" />
+				</LinearGradientBrush>
+			</Canvas.Background>
+		</Canvas>
+
+		<Grid Name="main_grid_" Grid.Row="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="{Binding Path=ListWidth, Mode=TwoWay, FallbackValue=200}" />
+				<ColumnDefinition MinWidth="30" Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<!-- list of activities -->
+			<ListBox Name="list_box_" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" BorderThickness="0,0,0,0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding Path=CurrentActivity, Mode=TwoWay}" ItemsSource="{Binding Path=Files}" SelectionMode="Extended" Visibility="{Binding Path=ListVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,6,0">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Path=CreationTime, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" TextTrimming="CharacterEllipsis" />
+<!--						<StackPanel Margin="3,2,0,4" HorizontalAlignment="Stretch">
+							<TextBlock Text="{Binding Path=FileName}" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" TextTrimming="CharacterEllipsis" />
+							<TextBlock Text="{Binding Path=CreationTime}" TextTrimming="CharacterEllipsis" />
+						</StackPanel> -->
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+			<!-- list splitter -->
+			<GridSplitter Grid.Column="0" HorizontalAlignment="Right" Grid.Row="1" VerticalAlignment="Stretch" Width="6" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=list_toggle_btn_}" />
+
+			<Grid Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Stretch">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*" />
+					<RowDefinition MinHeight="10" Height="{Binding Path=MapHeight, Mode=TwoWay, FallbackValue=150}"/>
+				</Grid.RowDefinitions>
+
+				<!-- map panel -->
+				<Grid Grid.Row="0" Name="map_panel_" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=map_btn_}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<WindowsPresentation:GMapControl x:Name="gmap_" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxZoom="19" ItemsSource="{Binding Path=Markers}" Zoom="{Binding MapZoom, Mode=TwoWay}" MapPoint="{Binding ActivityCenterPosition, Mode=OneWay}" MapProvider="{Binding MapProvider}" />
+
+					<StackPanel Grid.Column="1" Grid.Row="1" Margin="0,15,10,0">
+						<ToggleButton Name="pin_btn_" IsChecked="{Binding Path=IsMapPinned, Mode=TwoWay}" Style="{DynamicResource RoundToggleButtonStyle}">
+							<Path Fill="{StaticResource Button.Icon.Face}" Margin="7,5,5,7" Data="{DynamicResource PinImage}" Stretch="Uniform" SnapsToDevicePixels="False" />
+						</ToggleButton>
+						<Button Name="locate_btn_" Command="{Binding LocateOnMapCmd}" Style="{DynamicResource RoundButtonStyle}">
+							<Path Margin="7" Fill="{StaticResource Button.Icon.Face}" Stretch="Uniform" Data="{DynamicResource Crosshair}">
+							</Path>
+						</Button>
+						<Button Name="zoom_in_btn_" Command="{Binding MapZoomIn}" Style="{DynamicResource RoundButtonStyle}">
+							<Path Fill="{StaticResource Button.Icon.Face}" Data="{StaticResource PlusImage}"></Path>
+						</Button>
+						<Button Name="zoom_out_btn_" Command="{Binding MapZoomOut}" Style="{DynamicResource RoundButtonStyle}">
+							<Path Fill="{StaticResource Button.Icon.Face}" Data="{StaticResource MinusImage}"></Path>
+						</Button>
+					</StackPanel>
+				</Grid>
+
+				<!-- graphs panel -->
+				<Grid Grid.Row="1" x:Name="graphs_" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=graph_btn_}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" ClipToBounds="True">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<OxyPlot:PlotView Model="{Binding PlotModel}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1,5,0,0" />
+				</Grid>
+
+				<!-- map splitter -->
+				<GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="6" />
+
+			</Grid>
+
+			<!-- activity statistics go here -->
+			<Grid Name="stats_" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="80" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="140" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="80" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+
+				<StackPanel Grid.Column="0" Orientation="Vertical" Margin="8,5,5,0">
+					<TextBlock Text="Duration" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Total Distance" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Average Speed" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Max Speed" Style="{StaticResource GrayLabel}" />
+				</StackPanel>
+				<StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,5,5,0">
+					<TextBlock Text="{Binding Duration}" />
+					<TextBlock Text="{Binding TotalDistance}" />
+					<TextBlock Text="{Binding AvgSpeed}" />
+					<TextBlock Text="{Binding MaxSpeed}" />
+				</StackPanel>
+
+				<StackPanel Grid.Column="2" Orientation="Vertical" Margin="5,5,5,0">
+					<TextBlock Text="Date and Time" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Total Ascent" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Total Descent" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Elevation Difference" Style="{StaticResource GrayLabel}" />
+				</StackPanel>
+				<StackPanel Grid.Column="3" Orientation="Vertical" Margin="0,5,5,0">
+					<TextBlock Text="{Binding Date, StringFormat={}{0:g}}" />
+					<TextBlock Text="{Binding Ascent}" />
+					<TextBlock Text="{Binding Descent}" />
+					<TextBlock Text="{Binding Elevation}" />
+				</StackPanel>
+
+				<StackPanel Grid.Column="4" Orientation="Vertical" Margin="5,5,5,0">
+					<TextBlock Text="Average Heart Rate" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Max Heart Rate" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Calories" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Average Cadence" Style="{StaticResource GrayLabel}" />
+				</StackPanel>
+				<StackPanel Grid.Column="5" Orientation="Vertical" Margin="0,5,5,0">
+					<TextBlock Text="{Binding AvgHeartRate}" />
+					<TextBlock Text="{Binding MaxHeartRate}" />
+					<TextBlock Text="{Binding Calories}" />
+					<TextBlock Text="{Binding Cadence}" />
+				</StackPanel>
+
+				<OxyPlot:PlotView Grid.Column="6" Model="{Binding HeartRatePlotModel}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="150" Height="80" Background="{DynamicResource Application.Background}" />
+
+				<Canvas Height="5" VerticalAlignment="Top" Grid.ColumnSpan="8">
+					<Canvas.Background>
+						<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+							<GradientStop Color="#50000000" Offset="0" />
+							<GradientStop Color="#80FFFFFF" Offset="0.2" />
+							<GradientStop Offset="1" />
+						</LinearGradientBrush>
+					</Canvas.Background>
+				</Canvas>
+			</Grid>
+
+		</Grid>
+
+	</Grid>
+</Window>
