@@ -46,7 +46,7 @@ namespace CycleTrainer
 				// add new item if it's not there
 				if (!files_.Contains(pwx => pwx.FilePath, e.FullPath))
 				{
-					var new_item = CreateActivity(e.Name);
+					var new_item = CreateActivity(e.FullPath);
 					if (new_item != null)
 						files_.BinarySearchInsert(pwx => pwx.CreationTime, new_item);
 				}
@@ -65,7 +65,7 @@ namespace CycleTrainer
 
 			Dispatcher.BeginInvoke(() => {
 				// add new item
-				var new_item = CreateActivity(e.Name);
+				var new_item = CreateActivity(e.FullPath);
 				if (new_item != null)
 					files_.BinarySearchInsert(pwx => pwx.CreationTime, new_item);
 			});

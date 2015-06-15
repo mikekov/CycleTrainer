@@ -526,7 +526,7 @@ namespace CycleApp
 #endif
 		void SetHeartZonesHistogram(CycleTrainer.Samples samples, double max)
 		{
-			var model= new PlotModel { Title = "Heart Rate", LegendSymbolLength = 6, LegendFontSize = 10, TitleFontSize = 10, DefaultFontSize = 10 };
+			var model= new PlotModel { Title = "Heart Rate", LegendSymbolLength = 6, LegendFontSize = 10, TitleFontSize = 10, DefaultFontSize = 10, TitlePadding = 16 };
 
 			if (samples == null || samples.Trip.Length == 0)
 			{
