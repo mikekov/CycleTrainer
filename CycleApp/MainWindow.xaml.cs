@@ -18,6 +18,7 @@ namespace CycleApp
 			context_ = new ActivityDataSource(Dispatcher);
 			map_ds_ = new MapDataSource();
 			stats_ds_ = new StatisticsDataSource();
+			settings_ = new SettingsDataSource();
 
 			stats_ds_.CurrentMapPosition += (sender, args) => { map_ds_.CurrentPosition = new GMap.NET.PointLatLng(args.Position.X, args.Position.Y); };
 
@@ -44,8 +45,12 @@ namespace CycleApp
 			map_buttons_.DataContext = map_ds_;
 			graphs_.DataContext = stats_ds_;
 			stats_.DataContext = stats_ds_;
+			settings_panel_.DataContext = settings_;
 
 			var s = Properties.Settings.Default;
+
+			settings_.MaxHeartRate = s.MaxHeartRate;
+			stats_ds_.YourMaxHeartRate = s.MaxHeartRate;
 
 			context_.ActivitiesFolder = s.PwxDirectory;
 
@@ -116,11 +121,14 @@ namespace CycleApp
 
 			s.PwxDirectory = context_.ActivitiesFolder;
 
+			s.MaxHeartRate = settings_.MaxHeartRate;
+
 			s.Save();
 		}
 
 		ActivityDataSource context_;
 		MapDataSource map_ds_;
 		StatisticsDataSource stats_ds_;
+		SettingsDataSource settings_;
 	}
 }

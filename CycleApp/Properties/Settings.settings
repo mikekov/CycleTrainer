@@ -5,9 +5,6 @@
     <Setting Name="PwxDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MaxHeartBeat" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">170</Value>
-    </Setting>
     <Setting Name="WindowBounds" Type="System.Windows.Rect" Scope="User">
       <Value Profile="(Default)">0,0,1000,600</Value>
     </Setting>
@@ -43,6 +40,9 @@
     </Setting>
     <Setting Name="MapSplitterPos" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="MaxHeartRate" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">180</Value>
     </Setting>
   </Settings>
 </SettingsFile>

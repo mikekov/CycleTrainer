@@ -226,7 +226,7 @@ namespace CycleTrainer
 				}
 			}
 
-			return new Samples(samples, start_time, duration, duration_stopped, distance, work, 0);
+			return new Samples(samples, start_time, duration, duration_stopped, distance, work, 0, null, null);
 		}
 	}
 }

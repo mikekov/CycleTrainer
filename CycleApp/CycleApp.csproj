@@ -79,9 +79,11 @@
     <Compile Include="DataSources\ActivityDataSource.cs" />
     <Compile Include="BindableBase.cs" />
     <Compile Include="Converters.cs" />
+    <Compile Include="DataSources\SettingsDataSource.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DataSources\MapDataSource.cs" />
     <Compile Include="DataSources\StatisticsDataSource.cs" />
+    <Compile Include="SelectExtension.cs" />
     <Compile Include="Utilities.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -555,7 +555,7 @@ namespace CycleApp
 			for (int i= 0; i < zone_count + 1; ++i)
 				bins.Add(new HistogramBin { Label = string.Empty });
 
-			double tick= 1;
+
 			//if (samples.Trip.Length > 1)
 			//{
 			//	//samples.Trip.Aggregate((a, b) => a);
@@ -567,6 +567,7 @@ namespace CycleApp
 			//	var up_down= pairs.Aggregate(Tuple.Create(0.0, 0.0), (acc, p) => p.Item1 > p.Item2 ? Tuple.Create(acc.Item1, p.Item1 - p.Item2) : Tuple.Create(p.Item2 - p.Item1, acc.Item2));
 			//}
 
+			double time = 0;
 			foreach (var s in samples.Trip)
 			{
 				var hr= s.HeartRate;
@@ -585,7 +586,9 @@ namespace CycleApp
 				else if (bin >= bins.Count)
 					bin = bins.Count - 1;
 
-				bins[bin].Value += tick;
+				bins[bin].Value += s.TimeOffset - time;
+
+				time = s.TimeOffset;
 			}
 
 			var series = new ColumnSeries { ItemsSource = bins, ValueField = "Value", FillColor = OxyColor.FromRgb(0x69, 0x77, 0x81), StrokeThickness = 0, StrokeColor = OxyColors.Transparent };
@@ -661,9 +664,44 @@ namespace CycleApp
 
 		void RefreshStats(CycleTrainer.Samples samples)
 		{
-			double max_hr= 188;// (double)(your_max_hr_.Value);
+			double max_hr= your_max_hr_;
 			SetHeartZonesHistogram(samples, max_hr);
 			SetStatistics(samples, max_hr);
+		}
+
+		struct ValueDuration
+		{
+			public ValueDuration(double v, double d)
+			{
+				value = v;
+				duration = d;
+			}
+			public double value;
+			public double duration;
+		}
+
+		static IEnumerable<ValueDuration> GetNumbersWithDuration(CycleTrainer.Samples samples, Func<CycleTrainer.Sample, double> select, int min_length = 1, Func<double, bool> filter_in = null)
+		{
+			if (filter_in == null)
+				filter_in = (double x) => true;
+
+			var nums = samples.Trip.Where(s => { var x = select(s); return !double.IsNaN(x) && filter_in(x); }).
+				Select2((prev, el) => new ValueDuration(select(el), el.TimeOffset - prev.TimeOffset));
+
+			if (min_length > 0) // check if there's enough elements
+			{
+				var it = nums.GetEnumerator();
+				int n = 0;
+				while (it.MoveNext())
+				{
+					n++;
+					if (n == min_length)
+						return nums;
+				}
+				return null;    // sequence too short
+			}
+
+			return nums;
 		}
 
 		static IEnumerable<double> GetNumbers(CycleTrainer.Samples samples, Func<CycleTrainer.Sample, double> select, int min_length= 1, Func<double, bool> filter_in= null)
@@ -708,6 +746,8 @@ namespace CycleApp
 			Cadence = empty;
 			MaxSpeed = empty;
 			AvgSpeed = empty;
+			Product = samples.Product;
+			Manufacturer = samples.Manufacturer;
 
 			if (samples == null || samples.Trip.Length == 0)
 			{
@@ -718,26 +758,34 @@ namespace CycleApp
 				//activity_label_.Text = samples.Date.ToShortDateString();
 				Date = samples.Date;
 
-				var spd= GetNumbers(samples, s => s.Speed);
+				//var spd= GetNumbers(samples, s => s.Speed);
+				var spd = GetNumbersWithDuration(samples, s => s.Speed);
 				if (spd != null)
 				{
-					var avg= spd.Average();
-					if (avg > 0)
-						AvgSpeed = (avg * MS_TO_KMH).ToString("0.0") + " km/h";
-					var max= spd.Max();
+					// average weighted
+					var avg = spd.Reduce((v, acc) => new ValueDuration(acc.value + v.value * v.duration, acc.duration + v.duration), new ValueDuration(0, 0));
+					if (avg.duration > 0)
+						AvgSpeed = (avg.value / avg.duration * MS_TO_KMH).ToString("0.0") + " km/h";
+//					var avg = spd.Average(v => v.value);
+//					if (avg > 0)
+//						AvgSpeed = (avg * MS_TO_KMH).ToString("0.0") + " km/h";
+					var max= spd.Max(v => v.value);
 					if (max > 0)
 						MaxSpeed = (max * MS_TO_KMH).ToString("0.0") + " km/h";
 				}
 
-				var hr= GetNumbers(samples, s => s.HeartRate, 1, h => h > 0.0);
+				var hr = GetNumbersWithDuration(samples, s => s.HeartRate, 1, h => h > 0.0);
 				if (hr != null)
 				{
-					var min= hr.Min();
+					var min = hr.Min(v => v.value);
 					MinHeartRate = min.ToString("0") + " (" + (min / max_hr).ToString("0%") + ")";
-					var max= hr.Max();
+					var max = hr.Max(v => v.value);
 					MaxHeartRate = max.ToString("0") + " (" + (max / max_hr).ToString("0%") + ")";
 
-					AvgHeartRate = hr.Average().ToString("0.0");
+					// average weighted
+					var avg = hr.Reduce((v, acc) => new ValueDuration(acc.value + v.value * v.duration, acc.duration + v.duration), new ValueDuration(0, 0));
+					if (avg.duration > 0)
+						AvgHeartRate = (avg.value / avg.duration).ToString("0.0");
 				}
 
 				var dr= samples.Duration - samples.DurationStopped;
@@ -929,5 +977,28 @@ namespace CycleApp
 		}
 
 		public event EventHandler<Args> CurrentMapPosition;
+
+		string manufacturer_;
+
+		public string Manufacturer
+		{
+			get { return manufacturer_; }
+			set { SetProperty(ref manufacturer_, value); }
+		}
+
+		string product_;
+
+		public string Product
+		{
+			get { return product_; }
+			set { SetProperty(ref product_, value); }
+		}
+
+		double your_max_hr_ = 180;
+		public double YourMaxHeartRate
+		{
+			get { return your_max_hr_; }
+			set { SetProperty(ref your_max_hr_, value); }
+		}
 	}
 }

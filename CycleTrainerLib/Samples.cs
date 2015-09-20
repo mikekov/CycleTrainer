@@ -60,7 +60,7 @@ namespace CycleTrainer
 	// collection of samples
 	public class Samples
 	{
-		public Samples(List<Sample> samples, DateTime date_time, double duration, double duration_stopped, double distance, double work, double power)
+		public Samples(List<Sample> samples, DateTime date_time, double duration, double duration_stopped, double distance, double work, double power, string manufacturer, string product)
 		{
 			Trip = samples.ToArray();
 			Date = date_time;
@@ -69,6 +69,8 @@ namespace CycleTrainer
 			DurationStopped = duration_stopped;
 			Work = work;
 			Power = power;
+			Manufacturer = manufacturer;
+			Product = product;
 
 			var min_lat = double.NaN;
 			var max_lat = double.NaN;
@@ -118,5 +120,7 @@ namespace CycleTrainer
 		public double Distance { get; private set; }
 		public double Work { get; private set; }
 		public double Power { get; private set; }
+		public string Manufacturer { get; private set; }
+		public string Product { get; private set; }
 	}
 }

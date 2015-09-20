@@ -21,8 +21,12 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
 
-		<Grid Grid.Row="0" Margin="5">
+		<Grid Grid.Row="0" Margin="5" Grid.ColumnSpan="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="Auto" />
@@ -66,14 +70,14 @@
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
-				<Button Grid.Column="1" Style="{StaticResource RoundRectPushButton}" Margin="0" Width="32" Padding="0,0,0,0">
+				<ToggleButton x:Name="settings_btn_" Grid.Column="1" Style="{StaticResource RoundRectToggleButton}" Margin="0" Width="32" Padding="0,0,0,0">
 					<Path Fill="{StaticResource Button.Icon.Face}" Margin="0" Data="{StaticResource SettingsImage}" Stretch="Uniform" SnapsToDevicePixels="False" />
-				</Button>
+				</ToggleButton>
 			</Grid>
 		</Grid>
 
 		<!-- shadow edge -->
-		<Canvas Grid.Row="1" Height="3" VerticalAlignment="Bottom">
+		<Canvas Grid.Row="1" Height="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
 			<Canvas.Background>
 				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 					<GradientStop Color="#00000000" Offset="0" />
@@ -169,6 +173,8 @@
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="80" />
 					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="120" />
 					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
 
@@ -213,7 +219,16 @@
 
 				<OxyPlot:PlotView Grid.Column="6" Model="{Binding HeartRatePlotModel}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="150" Height="80" Background="{DynamicResource Application.Background}" />
 
-				<Canvas Height="5" VerticalAlignment="Top" Grid.ColumnSpan="8">
+				<StackPanel Grid.Column="7" Orientation="Vertical" Margin="5,5,5,0">
+					<TextBlock Text="Manufacturer" Style="{StaticResource GrayLabel}" />
+					<TextBlock Text="Product" Style="{StaticResource GrayLabel}" />
+				</StackPanel>
+				<StackPanel Grid.Column="8" Orientation="Vertical" Margin="0,5,5,0">
+					<TextBlock Text="{Binding Manufacturer}" />
+					<TextBlock Text="{Binding Product}" />
+				</StackPanel>
+
+				<Canvas Height="5" VerticalAlignment="Top" Grid.ColumnSpan="10">
 					<Canvas.Background>
 						<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 							<GradientStop Color="#50000000" Offset="0" />
@@ -225,6 +240,27 @@
 			</Grid>
 
 		</Grid>
+
+		<!-- settings -->
+		<Grid x:Name="settings_panel_" Grid.Column="1" Grid.Row="2" Visibility="{Binding IsChecked, ElementName=settings_btn_, Converter={StaticResource BooleanToVisibilityConverter}}">
+			<StackPanel Margin="10" Orientation="Vertical">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Margin="0,0,6,0">Max Heart Rate</TextBlock>
+					<TextBox Text="{Binding MaxHeartRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50"></TextBox>
+				</StackPanel>
+			</StackPanel>
+
+			<Canvas Grid.Column="1" Grid.Row="2" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+				<Canvas.Background>
+					<LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+						<GradientStop Color="#30000000" Offset="0" />
+						<GradientStop Color="#80FFFFFF" Offset="0.2" />
+						<GradientStop Offset="1" />
+					</LinearGradientBrush>
+				</Canvas.Background>
+			</Canvas>
+		</Grid>
+
 
 	</Grid>
 </Window>
